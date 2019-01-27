@@ -3,6 +3,8 @@ Step 1:
     Get started with this model. If this don't work we will train against Stockfish
 
 Things to do:
+    Training set must consist of only one team right
+    For a first step, all moves made by white are correct? Disregard who wins in the end
 
 Data augmentation: Flip the board, so that the algorithm trains on both black and white moves, that is reflect the board vertically and horizontally, as well as the labels. 
 
