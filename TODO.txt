@@ -1,11 +1,16 @@
 
-Step 1:
-    Get started with this model. If this don't work we will train against Stockfish
+Objective: 
+    Make a chess engine that can beat me. 
 
-Things to do:
-    Training set must consist of only one team right
-    For a first step, all moves made by white are correct? Disregard who wins in the end
+Roadmap:
+    1) Find --useful-- games to parse
+    2) Serialize useful games into network input
+    3) Create a --keras-- Conv2D model that makes sense 
+    4) Train model
+    5) Create Flask app so you can play against the network
 
-Data augmentation: Flip the board, so that the algorithm trains on both black and white moves, that is reflect the board vertically and horizontally, as well as the labels. 
+1) Lichess games, one of the players must have an ELO below a certain threshold
 
-En passant? Castling rights?
+
+
+
