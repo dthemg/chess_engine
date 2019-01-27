@@ -9,7 +9,8 @@ Roadmap:
     4) [TODO] Train model
     5) [TODO] Create Flask app so you can play against the network
 
-
+Things:
+    Reverse board and result between turns with mirror() function!
 
 
 
