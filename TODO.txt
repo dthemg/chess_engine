@@ -3,13 +3,12 @@ Objective:
     Make a chess engine that can beat me. 
 
 Roadmap:
-    1) Find --useful-- games to parse
-    2) Serialize useful games into network input
-    3) Create a --keras-- Conv2D model that makes sense 
-    4) Train model
-    5) Create Flask app so you can play against the network
+    1) [DONE] Find --useful-- games to parse 
+    2) [DONE] Serialize useful games into network input
+    3) [TODO] Create a --keras-- model that makes sense 
+    4) [TODO] Train model
+    5) [TODO] Create Flask app so you can play against the network
 
-1) Lichess games, one of the players must have an ELO below a certain threshold
 
 
 
