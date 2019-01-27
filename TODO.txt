@@ -1,0 +1,5 @@
+
+Things to do:
+
+Data augmentation: Flip the board, so that the algorithm trains on both black and white moves, that is reflect the board vertically and horizontally, as well as the labels. 
+
