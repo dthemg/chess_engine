@@ -69,14 +69,14 @@ def serialize_pgn_file():
     Y_ser = []
     with open(os.path.join('data', 'lichess_db_sub1200.pgn')) as pgn_file:
         while True:
-
             game = chess.pgn.read_game(pgn_file)
             if game is not None:
-                n_ser += 1
                 ser_moves, ser_results = serialize_game(game)
                 X_ser.extend(ser_moves)
                 Y_ser.extend(ser_results)
-                
+                n_ser += 1
+                if n_ser % 100 == 0:
+                    print("Serialized %i games" % n_ser)
             else:
                 break
     print('Successfully parsed %i games' % n_ser)

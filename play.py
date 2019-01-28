@@ -9,14 +9,23 @@ import re
 import serialize
 
 
-# Fix Black illegal moves
-def engine_play(mod, board):
+
+
+def human_make_move(board):
+    move_san = input('Make move:')
+    board.push_san(move_san)
+    return board
+
+def engine_make_move(mod, board):
+   
+    #board = board.copy()
+
+    # Black's turn?
+    mirror_board = not board.turn
 
     # If black moves mirror board
-    if board.turn == 0:
-        board = board.mirror()
-    
-    
+    if mirror_board:
+        board = board.mirror()    
     scores = []
 
     # Generate scores for all legal moves
@@ -29,28 +38,39 @@ def engine_play(mod, board):
                 'score': mod.predict(ser_board.reshape(1,-1))
                 })
     sorted_moves = sorted(scores, key = lambda ev: ev['score'], reverse=True)
-    print(sorted_moves) 
-    best_move = sorted_moves[0]['move']
-    return best_move
+    board.push(sorted_moves[0]['move'])
+    
+    # If black moved mirror board back
+    if mirror_board:
+        board = board.mirror()
+
+    return board
+
+def play_self(mod):
+    board = chess.Board()
+    while not board.is_game_over():
+        board = engine_make_move(mod, board)
+        print("-"*30)
+        print(board)
+    print(board.result())
 
 def play_human(mod):
     board = chess.Board()
     while True:
         if not board.is_game_over():
-            move = engine_play(mod, board)
-            print('Computer moves')
-            board.push(move)
+            board = engine_make_move(mod, board)
             print(board)
+        else:
+            break
         if not board.is_game_over():
-            move = input('Make move:')
-            board.push_san(move)
-            print(board)
-        
-        
+            board = human_make_move(board) 
+            print(board)    
+        else:
+            break
 
 
 if __name__ == '__main__':
     mod = load_model(os.path.join('models', 'seq_587_3ep.h5'))
-    play_human(mod)
+    play_self(mod)
 
 
