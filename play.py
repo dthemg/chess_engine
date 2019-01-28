@@ -5,15 +5,11 @@ from keras.models import load_model
 import os
 import chess
 import re
-
 import serialize
 
-
-
-
 def human_make_move(board):
-    move_san = input('Make move:')
-    board.push_san(move_san)
+    move_uci = input('Make move:')
+    board.push_uci(move_uci)
     return board
 
 def engine_make_move(mod, board):
@@ -71,6 +67,6 @@ def play_human(mod):
 
 if __name__ == '__main__':
     mod = load_model(os.path.join('models', 'seq_587_3ep.h5'))
-    play_self(mod)
+    play_human(mod)
 
 
