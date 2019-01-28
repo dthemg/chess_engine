@@ -6,6 +6,7 @@ from keras.layers import Dense, Dropout
 from keras.models import Sequential
 from keras import optimizers
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import classification_report
 
 def load_dataset(name):
     h5f = h5py.File(os.path.join("serialized_data", name), 'r')
@@ -30,7 +31,13 @@ if __name__ == "__main__":
 
     mod = create_model()
     mod.compile(optimizer='adam', loss='mean_squared_error', metrics=['accuracy'])
-    X_tr, X_ts, y_tr, y_ts = train_test_split(X, y, test_size=0.10) 
-    mod.fit(X_tr, y_tr, batch_size=512, epochs=10)
+    X_tr, X_ts, y_tr, y_ts = train_test_split(X, y, test_size=0.10, shuffle=False) 
+    mod.fit(X_tr, y_tr, batch_size=512, epochs=3)
+
     
-    # The model manages to learn on the training set, but it probably just overfits on these few games
+    y_pred = mod.predict(X_ts, verbose=1)
+    mse = ((y_pred - y_ts)**2).mean() 
+    print('Validation MSE:', mse)
+    
+    mod.save(os.path.join('models', 'seq_587_3ep.h5'))
+    
