@@ -21,8 +21,11 @@ def load_dataset(name):
 def create_model():
     model = Sequential()
     model.add(Dense(2048, activation='relu', input_shape=(772,)))
+    model.add(Dropout(0.5))
     model.add(Dense(2048, activation='relu'))
+    model.add(Dropout(0.5))
     model.add(Dense(1024, activation='relu'))
+    model.add(Dropout(0.5))
     model.add(Dense(1, activation='sigmoid'))
     return model
 
@@ -35,7 +38,7 @@ if __name__ == "__main__":
     mod = create_model()
     mod.compile(optimizer='adam', loss='mean_squared_error', metrics=['accuracy'])
     X_tr, X_ts, y_tr, y_ts = train_test_split(X, y, test_size=0.10, shuffle=False) 
-    mod.fit(X_tr, y_tr, batch_size=2048, epochs=1)
+    mod.fit(X_tr, y_tr, batch_size=2048, epochs=3)
     
     y_pred = mod.predict(X_ts, verbose=1)
     print("Validation MSE:", mean_squared_error(y_ts, y_pred))

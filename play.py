@@ -6,6 +6,7 @@ import os
 import chess
 import re
 import serialize
+import flask
 
 def human_make_move(board):
     move_uci = input('Make move:')
@@ -13,9 +14,7 @@ def human_make_move(board):
     return board
 
 def engine_make_move(mod, board):
-   
-    #board = board.copy()
-
+    
     # Black's turn?
     mirror_board = not board.turn
 
