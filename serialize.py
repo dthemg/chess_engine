@@ -50,8 +50,16 @@ def serialize_game(game):
     y_rep = {"0-1":-1, "1/2-1/2":0, "1-0":1}[res]
 
     for move in moves:
-        serialized_moves.append(serialize_board(board))
-        serialized_results.append(y_rep)
+    
+        if board.turn == 0:
+            # Black moves
+            board_mir = board.mirror()
+            serialized_moves.append(serialize_board(board_mir))
+            serialized_results.append(y_rep*-1)
+        else:
+            # White moves
+            serialized_moves.append(serialize_board(board))
+            serialized_results.append(y_rep)
         board.push(move)
     return serialized_moves, serialized_results
 

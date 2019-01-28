@@ -5,12 +5,13 @@ Objective:
 Roadmap:
     1) [DONE] Find --useful-- games to parse 
     2) [DONE] Serialize useful games into network input
-    3) [TODO] Create a --keras-- model that makes sense 
-    4) [TODO] Train model
+    3) [DONE] Create a --keras-- model that makes sense 
+    4) [DONE] Train model
     5) [TODO] Create Flask app so you can play against the network
 
 Things:
-    Reverse board and result between turns with mirror() function!
+    [DONE] Castling rights
+    [DONE] Reverse board and result between turns with mirror() function!
 
 
 
