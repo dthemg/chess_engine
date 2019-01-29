@@ -13,5 +13,5 @@ Things:
     [DONE] Castling rights
     [DONE] Reverse board and result between turns with mirror() function!
     [TODO] Figure out how to load larger data files, so work with that.
-
+    [TODO] Refactor the engine/board into a class for ease of use
 
