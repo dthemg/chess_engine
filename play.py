@@ -4,9 +4,12 @@ import numpy as np
 from keras.models import load_model
 import os
 import chess
+import chess.svg
 import re
 import serialize
-import flask
+from flask import Flask, render_template, Markup
+
+app = Flask(__name__)
 
 def human_make_move(board):
     move_uci = input('Make move:')
@@ -41,6 +44,17 @@ def engine_make_move(mod, board):
 
     return board
 
+
+@app.route('/')
+def hello_world():
+    return render_template('index.html')
+
+@app.route('/board')
+def display_board():
+    board = chess.Board()
+    my_svg = chess.svg.board(board=board)
+    return render_template('board.html', svg=Markup(my_svg))
+
 def play_self(mod):
     board = chess.Board()
     while not board.is_game_over():
@@ -64,8 +78,10 @@ def play_human(mod):
             break
 
 
-if __name__ == '__main__':
-    mod = load_model(os.path.join('models', 'seq_587_3ep.h5'))
-    play_human(mod)
+#mod = load_model(os.path.join('models', 'seq_587_3ep.h5'))
+#print('Hello you')
+    
+    #play_human(mod)
 
 
+#
