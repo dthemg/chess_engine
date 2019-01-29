@@ -5,10 +5,16 @@
 </head>
 
 <body>
-
 <svg width='500' height='500'>
     {{ svg }}
 </svg>
+</body>
 
+<body>
+    <form action = 'http://localhost:5000/board' method = 'post'>
+        <p>Make move:</p>
+        <p><input type = 'text' name = 'user_move'/></p>
+        <p><input type = 'submit' value = 'submit'/></p>
+    </form>
 </body>
 </html>

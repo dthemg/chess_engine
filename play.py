@@ -7,7 +7,7 @@ import chess
 import chess.svg
 import re
 import serialize
-from flask import Flask, render_template, Markup
+from flask import Flask, render_template, Markup, request
 
 app = Flask(__name__)
 
@@ -49,9 +49,19 @@ def engine_make_move(mod, board):
 def hello_world():
     return render_template('index.html')
 
-@app.route('/board')
-def display_board():
+@app.route('/board', methods = ['POST', 'GET'])
+def board_page():
     board = chess.Board()
+    if request.method == 'POST':
+        user_move = request.form['user_move']
+        try:
+            board.push_uci(user_move)
+            print('Legal move')
+        except ValueError:
+            print('Not a legal move')
+    return update_new_moves(board) 
+    
+def update_new_moves(board):    
     my_svg = chess.svg.board(board=board)
     return render_template('board.html', svg=Markup(my_svg))
 
@@ -77,6 +87,9 @@ def play_human(mod):
         else:
             break
 
+
+if __name__ == '__main__':
+    app.run()
 
 #mod = load_model(os.path.join('models', 'seq_587_3ep.h5'))
 #print('Hello you')
