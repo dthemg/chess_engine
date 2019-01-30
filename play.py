@@ -46,21 +46,30 @@ def engine_make_move(mod, board):
 
 
 @app.route('/')
-def hello_world():
+def start_page():
     return render_template('index.html')
 
 @app.route('/board', methods = ['POST', 'GET'])
 def board_page():
-    board = chess.Board()
+    if board is None:
+        board = chess.Board()
+
     if request.method == 'POST':
         user_move = request.form['user_move']
         try:
+            # Human makes move
             board.push_uci(user_move)
-            print('Legal move')
+            # Computer makes move
+            board = engine_make_move(mod, board)
+
         except ValueError:
-            print('Not a legal move')
-    return update_new_moves(board) 
-    
+            print('Not a legal move') 
+
+    return update_new_moves(board)
+
+
+
+
 def update_new_moves(board):    
     my_svg = chess.svg.board(board=board)
     return render_template('board.html', svg=Markup(my_svg))
@@ -89,6 +98,8 @@ def play_human(mod):
 
 
 if __name__ == '__main__':
+    board = chess.Board()
+    mod = load_model(os.path.join('models', 'seq_587_3ep.h5'))
     app.run()
 
 #mod = load_model(os.path.join('models', 'seq_587_3ep.h5'))
