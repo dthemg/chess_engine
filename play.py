@@ -7,7 +7,7 @@ import chess
 import chess.svg
 import re
 import serialize
-from flask import Flask, render_template, Markup, request
+from flask import Flask, render_template, Markup, request, session
 
 app = Flask(__name__)
 
@@ -15,6 +15,9 @@ def human_make_move(board):
     move_uci = input('Make move:')
     board.push_uci(move_uci)
     return board
+
+def reverse_uci(uci_string):
+    pass
 
 def engine_make_move(mod, board):
     
@@ -35,7 +38,9 @@ def engine_make_move(mod, board):
                 'move': lmove,
                 'score': mod.predict(ser_board.reshape(1,-1))
                 })
-    sorted_moves = sorted(scores, key = lambda ev: ev['score'], reverse=True)
+    best_move = sorted(scores, key = lambda ev: ev['score'], reverse=True)[0]['move']
+    move_uci = best_move.uci()
+
     board.push(sorted_moves[0]['move'])
     
     # If black moved mirror board back
@@ -49,11 +54,12 @@ def engine_make_move(mod, board):
 def start_page():
     return render_template('index.html')
 
-@app.route('/board', methods = ['POST', 'GET'])
+@app.route('/board')
 def board_page():
-    if board is None:
-        board = chess.Board()
-
+    board = chess.Board()
+    session['board'] = board.fen()
+    
+    '''
     if request.method == 'POST':
         user_move = request.form['user_move']
         try:
@@ -64,12 +70,26 @@ def board_page():
 
         except ValueError:
             print('Not a legal move') 
-
+    '''
     return update_new_moves(board)
 
+@app.route('/board', methods = ['POST', 'GET'])
+def board_move():
+    
+    #print(session.get('board'))
+    #board = chess.Board().set_fen(session.get('board'))
 
-
-
+    if request.method == 'POST':
+        user_move = request.form['user_move']
+        try:
+            # Human makes move
+            board.push_uci(user_move)
+            # Computer makes move
+            #board = engine_make_move(mod, board)
+        except ValueError:
+            print('Not legal')
+    return update_new_moves(board)
+           
 def update_new_moves(board):    
     my_svg = chess.svg.board(board=board)
     return render_template('board.html', svg=Markup(my_svg))
@@ -100,6 +120,8 @@ def play_human(mod):
 if __name__ == '__main__':
     board = chess.Board()
     mod = load_model(os.path.join('models', 'seq_587_3ep.h5'))
+    app.secret_key = 'aligator3'
+    app.config['SESSION_TYPE'] = 'filesystem'
     app.run()
 
 #mod = load_model(os.path.join('models', 'seq_587_3ep.h5'))
